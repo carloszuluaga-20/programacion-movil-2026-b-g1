@@ -6,14 +6,16 @@
 
 2) Propón tu idea de app para el semestre: problema, para quién, y 3 funciones imprescindibles (MVP).
 
-Problema: El desorden y la falta de comunicación rápida para organizar trabajos en equipo y proyectos de la universidad, lo que hace que se pierdan archivos o tareas.
+La del horario o recordatorios de clases es la más fácil y rápida de plantear. Quedaría redactada así, directa y sin enredos:
 
-Para quién: Estudiantes universitarios que necesitan coordinar sus grupos de estudio y entregas sin enredarse con tantas apps dispersas.
+Problema: En el día a día de la universidad uno se confunde fácil con los salones, los cambios de hora o se le pasa la hora de una entrega rápida.
 
-funciones imprescindibles (MVP):
+Para quién: Estudiantes que solo quieren ver su horario y sus pendientes sin perderse en menús complicados.
 
-1. Creación de equipos y roles: Un espacio básico para armar grupos por materia y asignar responsabilidades claras a cada integrante.
+  funciones imprescindibles (MVP):
 
-2. Tablero de tareas sencillo: Una lista compartida con estados simples (pendientes, en proceso, terminadas) para ver el avance del trabajo.
+1. Vista principal del horario: Una tabla limpia con los días de la semana, materias, horas y salones.
 
-3. Chat centralizado por grupo: Un canal de mensajería directo dentro de la misma app para coordinar acuerdos y enviar avances sin usar WhatsApp u otras redes externas.
+2. Alarma o recordatorio básico: Una notificación sencilla antes de que empiece la clase.
+
+3. Bloc de notas rápido: Un espacio plano por materia para apuntar lo que el profesor diga en el momento.
