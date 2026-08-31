@@ -19,3 +19,9 @@ Para quién: Estudiantes que solo quieren ver su horario y sus pendientes sin pe
 2. Alarma o recordatorio básico: Una notificación sencilla antes de que empiece la clase.
 
 3. Bloc de notas rápido: Un espacio plano por materia para apuntar lo que el profesor diga en el momento.
+
+3)Justifica qué tipo de tecnología usarías y por qué
+
+Para esta aplicación utilizaría una tecnología híbrida, porque permitiría desarrollar una sola aplicación que pueda funcionar tanto en Android como en iOS. Esto facilitaría el desarrollo y el mantenimiento de la aplicación, ya que no sería necesario crear una versión completamente diferente para cada sistema operativo.
+
+Además, para una aplicación de horario, recordatorios y notas no se necesita una tecnología demasiado compleja, por lo que una aplicación híbrida sería una opción práctica para desarrollar el proyecto.
