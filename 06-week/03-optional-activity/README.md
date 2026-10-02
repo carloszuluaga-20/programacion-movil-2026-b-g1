@@ -49,7 +49,3 @@ src/components/ExploreContainer.tsx
 para mostrar el mensaje:
 Bienvenido a Horario Estudiantil
 Organiza tus materias, horarios y notas desde tu celular.
-
----
-
-<img width="1905" height="961" alt="Captura de pantalla 2026-10-02 155011" src="https://github.com/user-attachments/assets/e47a52d5-4732-441b-ab02-7a6c39b8f938" />
