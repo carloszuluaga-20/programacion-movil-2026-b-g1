@@ -200,7 +200,6 @@ Ejemplo:
 const nombre = "Carlos";
 let edad = 20;
 ```
-
 ## Resultado
 
 Se creó correctamente una clase `Producto` en Kotlin utilizando validación, `val` y manejo de valores nulos.
@@ -208,3 +207,11 @@ Se creó correctamente una clase `Producto` en Kotlin utilizando validación, `v
 También se creó un componente funcional en Ionic React llamado `Saludo`, el cual muestra un nombre y un botón que genera un mensaje al ser presionado.
 
 Además, se identificaron dos diferencias básicas entre Kotlin y TypeScript relacionadas con el manejo de valores nulos y la declaración de variables.
+
+---
+
+## Evidencia
+
+A continuación se muestra el componente funcionando correctamente:
+
+<img width="1913" height="960" alt="image" src="https://github.com/user-attachments/assets/ad64c843-7cf3-4e24-8251-4eadab67ab17" />
