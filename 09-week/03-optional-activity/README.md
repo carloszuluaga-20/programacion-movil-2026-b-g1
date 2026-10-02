@@ -140,10 +140,12 @@ La aplicación cumple con los siguientes requisitos:
 
 La pantalla principal muestra la lista de cinco materias, el contador y el botón para navegar a la segunda página.
 
-![Pantalla principal](evidencia-inicio.png)
+<img width="1917" height="940" alt="image" src="https://github.com/user-attachments/assets/90740782-9d20-4f09-8bfc-3c2a9fcfd178" />
+
 
 ### Segunda página
 
 La segunda página muestra información adicional y permite regresar a la pantalla principal.
 
-![Segunda página](evidencia-detalle.png)
+<img width="1906" height="882" alt="image" src="https://github.com/user-attachments/assets/652d0ca4-9a12-4077-bf66-fcf06412d517" />
+
