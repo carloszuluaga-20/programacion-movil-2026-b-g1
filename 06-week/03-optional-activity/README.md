@@ -11,6 +11,9 @@ Configurar el entorno de desarrollo con Node.js e Ionic CLI, crear un proyecto I
 - Ionic CLI v7.2.1
 - Visual Studio Code
 
+- <img width="1917" height="957" alt="image" src="https://github.com/user-attachments/assets/8d8fc5a8-4c00-4f97-9a2d-e87d5147af3f" />
+
+
 ## Instalación del entorno
 
 Primero se verificaron las versiones de Node.js y npm:
