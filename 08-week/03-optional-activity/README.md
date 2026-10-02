@@ -1,3 +1,4 @@
+
 # Semana 8 - API REST con Express y consumo desde la app
 
 ## Objetivo
@@ -242,7 +243,8 @@ En esta prueba se consultó el endpoint `GET /tareas` desde el navegador.
 
 La API respondió correctamente con las tareas almacenadas inicialmente.
 
-![GET inicial](evidencia-get-inicial.png)
+<img width="1852" height="920" alt="Captura de pantalla 2026-10-02 170601" src="https://github.com/user-attachments/assets/f961fc5e-2026-4a0a-8a41-1f580eae7133" />
+
 
 ### POST /tareas - Creación de una tarea
 
@@ -250,7 +252,7 @@ Se probó el endpoint `POST /tareas` desde PowerShell.
 
 Se envió una nueva tarea con el título `Estudiar para el quiz` y la API respondió con la tarea creada y el identificador `3`.
 
-![POST tareas](evidencia-post.png)
+<img width="1447" height="162" alt="Captura de pantalla 2026-10-02 170752" src="https://github.com/user-attachments/assets/66ea4be5-322d-4db4-b00f-c2cc60688ab3" />
 
 ### GET /tareas - Después del POST
 
@@ -258,4 +260,4 @@ Después de crear la nueva tarea se consultó nuevamente el endpoint `GET /tarea
 
 La respuesta muestra las tres tareas, confirmando que la nueva tarea fue agregada correctamente.
 
-![GET final](evidencia-get-final.png)
+<img width="1892" height="936" alt="Captura de pantalla 2026-10-02 171115" src="https://github.com/user-attachments/assets/5f8630df-3822-49d4-a95e-a9cf1bf7772b" />
