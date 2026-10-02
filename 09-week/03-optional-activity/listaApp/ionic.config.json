@@ -1,0 +1,7 @@
+{
+  "name": "listaApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
