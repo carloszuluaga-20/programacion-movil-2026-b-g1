@@ -1,5 +1,5 @@
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -11,15 +11,11 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { theme } from "../../../core/theme/theme";
 import type { RootStackParamList } from "../../../core/navigation/types";
+import {
+  getAttendanceHistory,
+  type Session,
+} from "./attendanceHistoryData";
 import { styles } from "./attendanceHistoryStyles";
-
-type Session = {
-  id: string;
-  date: string;
-  checkIn: string;
-  checkOut: string;
-  muscleGroups: string[];
-};
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -32,18 +28,37 @@ export function AttendanceHistoryScreen({
 }: Props) {
   const { studentId } = route.params;
 
-  const [sessions] = useState<Session[]>([]);
-  const [loading] = useState(false);
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  const reload = useCallback(async () => {
-    setError(null);
-    setRefreshing(true);
+  const loadHistory = useCallback(
+    async (refresh = false) => {
+      if (refresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
 
-    // La conexión con el historial real está pendiente.
-    setRefreshing(false);
-  }, []);
+      setError(null);
+
+      try {
+        const data = await getAttendanceHistory(studentId);
+        setSessions(data);
+      } catch {
+        setError("No se pudo cargar el historial.");
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    },
+    [studentId]
+  );
+
+  useEffect(() => {
+    void loadHistory();
+  }, [loadHistory]);
 
   const renderSession = ({ item }: { item: Session }) => (
     <View style={styles.card}>
@@ -86,14 +101,18 @@ export function AttendanceHistoryScreen({
         </View>
       ) : error ? (
         <View style={styles.center}>
-          <Text style={styles.message}>{error}</Text>
+          <Text style={styles.message}>
+            {error}
+          </Text>
           <Pressable
             style={styles.button}
-            onPress={reload}
+            onPress={() => void loadHistory()}
             accessibilityRole="button"
             accessibilityLabel="Reintentar cargar historial"
           >
-            <Text style={styles.buttonText}>Reintentar</Text>
+            <Text style={styles.buttonText}>
+              Reintentar
+            </Text>
           </Pressable>
         </View>
       ) : (
@@ -103,7 +122,7 @@ export function AttendanceHistoryScreen({
           renderItem={renderSession}
           contentContainerStyle={styles.list}
           refreshing={refreshing}
-          onRefresh={reload}
+          onRefresh={() => void loadHistory(true)}
           ListEmptyComponent={
             <View style={styles.center}>
               <Text style={styles.message}>
