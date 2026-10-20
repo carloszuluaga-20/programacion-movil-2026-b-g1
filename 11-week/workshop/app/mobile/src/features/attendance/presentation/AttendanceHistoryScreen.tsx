@@ -8,7 +8,6 @@ import {
   View,
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-
 import { theme } from "../../../core/theme/theme";
 import type { RootStackParamList } from "../../../core/navigation/types";
 import {
@@ -27,34 +26,25 @@ export function AttendanceHistoryScreen({
   navigation,
 }: Props) {
   const { studentId } = route.params;
-
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  const loadHistory = useCallback(
-    async (refresh = false) => {
-      if (refresh) {
-        setRefreshing(true);
-      } else {
-        setLoading(true);
-      }
+  const loadHistory = useCallback(async (refresh = false) => {
+    if (refresh) setRefreshing(true);
+    else setLoading(true);
+    setError(null);
 
-      setError(null);
-
-      try {
-        const data = await getAttendanceHistory(studentId);
-        setSessions(data);
-      } catch {
-        setError("No se pudo cargar el historial.");
-      } finally {
-        setLoading(false);
-        setRefreshing(false);
-      }
-    },
-    [studentId]
-  );
+    try {
+      setSessions(await getAttendanceHistory(studentId));
+    } catch {
+      setError("No se pudo cargar el historial.");
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [studentId]);
 
   useEffect(() => {
     void loadHistory();
@@ -74,19 +64,24 @@ export function AttendanceHistoryScreen({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Pressable
-          onPress={() => navigation.goBack()}
-          accessibilityRole="button"
-          accessibilityLabel="Volver al detalle del estudiante"
-          style={styles.backButton}
-        >
-          <Text style={styles.backText}>Volver</Text>
-        </Pressable>
+        <View style={styles.headerContent}>
+          <Pressable
+            onPress={() => navigation.goBack()}
+            accessibilityRole="button"
+            accessibilityLabel="Volver al detalle del estudiante"
+            accessibilityHint="Regresa a la pantalla anterior"
+            style={styles.backButton}
+          >
+            <Text style={styles.backText}>Volver</Text>
+          </Pressable>
 
-        <Text style={styles.title}>Historial de asistencia</Text>
-        <Text style={styles.subtitle}>
-          Estudiante: {studentId}
-        </Text>
+          <Text style={styles.title} accessibilityRole="header">
+            Historial de asistencia
+          </Text>
+          <Text style={styles.subtitle}>
+            Estudiante: {studentId}
+          </Text>
+        </View>
       </View>
 
       {loading ? (
@@ -95,24 +90,19 @@ export function AttendanceHistoryScreen({
             size="large"
             color={theme.color.primary}
           />
-          <Text style={styles.message}>
-            Cargando historial...
-          </Text>
+          <Text style={styles.message}>Cargando historial...</Text>
         </View>
       ) : error ? (
         <View style={styles.center}>
-          <Text style={styles.message}>
-            {error}
-          </Text>
+          <Text style={styles.message}>{error}</Text>
           <Pressable
             style={styles.button}
             onPress={() => void loadHistory()}
             accessibilityRole="button"
             accessibilityLabel="Reintentar cargar historial"
+            accessibilityHint="Intenta cargar nuevamente el historial"
           >
-            <Text style={styles.buttonText}>
-              Reintentar
-            </Text>
+            <Text style={styles.buttonText}>Reintentar</Text>
           </Pressable>
         </View>
       ) : (

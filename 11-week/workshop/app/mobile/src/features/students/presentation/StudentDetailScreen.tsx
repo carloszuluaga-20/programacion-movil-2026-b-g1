@@ -1,5 +1,11 @@
 
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { theme } from "../../../core/theme/theme";
 import type { RootStackParamList } from "../../../core/navigation/types";
@@ -13,41 +19,61 @@ export function StudentDetailScreen({ route, navigation }: Props) {
   const { studentId } = route.params;
 
   return (
-    <View style={styles.container}>
-      <Pressable
-        style={styles.backButton}
-        accessibilityRole="button"
-        accessibilityLabel="Volver a estudiantes"
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.backText}>Volver</Text>
-      </Pressable>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <View style={styles.content}>
+        <Pressable
+          style={styles.backButton}
+          accessibilityRole="button"
+          accessibilityLabel="Volver a la lista de estudiantes"
+          accessibilityHint="Regresa a la pantalla anterior"
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.backText}>Volver</Text>
+        </Pressable>
 
-      <Text style={styles.title}>Detalle de estudiante</Text>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>Identificador del estudiante</Text>
-        <Text style={styles.value}>{studentId}</Text>
-
-        <Text style={styles.notice}>
-          La información completa estará disponible
-          cuando se conecte la consulta del estudiante.
+        <Text
+          style={styles.title}
+          accessibilityRole="header"
+        >
+          Detalle de estudiante
         </Text>
+
+        <View style={styles.card}>
+          <Text style={styles.label}>
+            Identificador del estudiante
+          </Text>
+
+          <Text
+            style={styles.value}
+            selectable
+          >
+            {studentId}
+          </Text>
+
+          <Text style={styles.notice}>
+            La información completa estará disponible cuando
+            se conecte la consulta del estudiante.
+          </Text>
+        </View>
+
+        <Pressable
+          style={styles.button}
+          accessibilityRole="button"
+          accessibilityLabel="Ver historial de asistencia"
+          accessibilityHint="Abre el historial del estudiante seleccionado"
+          onPress={() =>
+            navigation.navigate("AttendanceHistory", { studentId })
+          }
+        >
+          <Text style={styles.buttonText}>
+            Ver historial de asistencia
+          </Text>
+        </Pressable>
       </View>
-
-      <Pressable
-        style={styles.button}
-        accessibilityRole="button"
-        accessibilityLabel="Ver historial de asistencia"
-        onPress={() =>
-          navigation.navigate("AttendanceHistory", { studentId })
-        }
-      >
-        <Text style={styles.buttonText}>
-          Ver historial de asistencia
-        </Text>
-      </Pressable>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -55,7 +81,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.color.background,
+  },
+  scrollContent: {
+    flexGrow: 1,
     padding: theme.space.lg,
+  },
+  content: {
+    width: "100%",
+    maxWidth: 600,
+    alignSelf: "center",
     gap: theme.space.md,
   },
   backButton: {

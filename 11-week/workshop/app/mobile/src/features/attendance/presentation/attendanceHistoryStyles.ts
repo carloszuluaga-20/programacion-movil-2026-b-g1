@@ -8,8 +8,16 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.color.background,
   },
   header: {
+    width: "100%",
+    alignSelf: "center",
     padding: theme.space.lg,
     backgroundColor: theme.color.surface,
+    gap: theme.space.sm,
+  },
+  headerContent: {
+    width: "100%",
+    maxWidth: 600,
+    alignSelf: "center",
     gap: theme.space.sm,
   },
   backButton: {
@@ -31,6 +39,9 @@ export const styles = StyleSheet.create({
     color: theme.color.textMuted,
   },
   list: {
+    width: "100%",
+    maxWidth: 600,
+    alignSelf: "center",
     padding: theme.space.md,
     flexGrow: 1,
   },
