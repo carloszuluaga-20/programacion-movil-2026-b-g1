@@ -1,20 +1,28 @@
-import { FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
+
 import { useState } from "react";
+import {
+  FlatList,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
 import { Button } from "../../../shared/Button";
 import { theme } from "../../../core/theme/theme";
+import type { RootStackParamList } from "../../../core/navigation/types";
 import { useAuth } from "../../auth/presentation/AuthContext";
 import { useConnectivity } from "../../../core/network/useConnectivity";
 import { useStudentList } from "./useStudentList";
 import { AddStudentModal } from "./AddStudentModal";
 import { strings } from "./strings";
-import { Student } from "../domain/Student";
+import type { Student } from "../domain/Student";
 
-// See docs/01-architecture/screens/student-list.md for the full spec this implements.
-//
-// SCOPE NOTE for this corte: tapping a student card is a documented action ("Navigate to
-// StudentDetail with studentId") but StudentDetail isn't built yet — HU5/HU6/HU7 only. The
-// tap is wired to nothing for now rather than crashing on a missing route; it becomes real
-// navigation once StudentDetail exists.
+type StudentNavigation = NativeStackNavigationProp<RootStackParamList>;
+
 export function StudentListScreen() {
   const { logout } = useAuth();
   const { state, reload } = useStudentList();
@@ -27,6 +35,7 @@ export function StudentListScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{strings.screenTitle}</Text>
+
         <View style={styles.headerActions}>
           <Pressable
             accessible
@@ -35,10 +44,14 @@ export function StudentListScreen() {
             onPress={() => setModalVisible(true)}
             disabled={showOfflineBanner}
             hitSlop={8}
-            style={[styles.iconButton, showOfflineBanner && styles.iconButtonDisabled]}
+            style={[
+              styles.iconButton,
+              showOfflineBanner && styles.iconButtonDisabled,
+            ]}
           >
             <Text style={styles.iconButtonLabel}>+</Text>
           </Pressable>
+
           <Pressable
             accessible
             accessibilityRole="button"
@@ -47,14 +60,16 @@ export function StudentListScreen() {
             hitSlop={8}
             style={styles.iconButton}
           >
-            <Text style={styles.iconButtonLabel}>⎋</Text>
+            <Text style={styles.iconButtonLabel}>Salir</Text>
           </Pressable>
         </View>
       </View>
 
       {showOfflineBanner && (
         <View style={styles.banner}>
-          <Text style={styles.bannerText}>{strings.offlineBanner}</Text>
+          <Text style={styles.bannerText}>
+            {strings.offlineBanner}
+          </Text>
         </View>
       )}
 
@@ -62,15 +77,25 @@ export function StudentListScreen() {
 
       {state.status === "empty" && (
         <View style={styles.centered}>
-          <Text style={styles.emptyText}>{strings.emptyMessage}</Text>
-          <Button label={strings.addStudentCta} onPress={() => setModalVisible(true)} />
+          <Text style={styles.emptyText}>
+            {strings.emptyMessage}
+          </Text>
+          <Button
+            label={strings.addStudentCta}
+            onPress={() => setModalVisible(true)}
+          />
         </View>
       )}
 
       {state.status === "error" && (
         <View style={styles.centered}>
-          <Text style={styles.emptyText}>{strings.errorMessage}</Text>
-          <Button label={strings.retryButton} onPress={reload} />
+          <Text style={styles.emptyText}>
+            {strings.errorMessage}
+          </Text>
+          <Button
+            label={strings.retryButton}
+            onPress={reload}
+          />
         </View>
       )}
 
@@ -78,8 +103,15 @@ export function StudentListScreen() {
         <FlatList
           data={state.students}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <StudentCard student={item} />}
-          refreshControl={<RefreshControl refreshing={false} onRefresh={reload} />}
+          renderItem={({ item }) => (
+            <StudentCard student={item} />
+          )}
+          refreshControl={
+            <RefreshControl
+              refreshing={false}
+              onRefresh={reload}
+            />
+          }
         />
       )}
 
@@ -93,10 +125,28 @@ export function StudentListScreen() {
 }
 
 function StudentCard({ student }: { student: Student }) {
+  const navigation = useNavigation<StudentNavigation>();
+
   return (
-    // See SCOPE NOTE above — no-op until StudentDetail exists.
-    <Pressable accessible accessibilityRole="button" accessibilityLabel={student.name} style={styles.card}>
-      <Text style={styles.cardText}>{student.name}</Text>
+    <Pressable
+      accessible
+      accessibilityRole="button"
+      accessibilityLabel={`Ver detalle de ${student.name}`}
+      accessibilityHint="Abre la información del estudiante"
+      onPress={() =>
+        navigation.navigate("StudentDetail", {
+          studentId: student.id,
+        })
+      }
+      style={styles.card}
+    >
+      <Text style={styles.cardText}>
+        {student.name}
+      </Text>
+
+      <Text style={styles.cardHint}>
+        Ver detalle
+      </Text>
     </Pressable>
   );
 }
@@ -112,15 +162,24 @@ function SkeletonList() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: theme.color.background },
+  container: {
+    flex: 1,
+    backgroundColor: theme.color.background,
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: theme.space.md,
   },
-  title: { ...theme.text.title, color: theme.color.text },
-  headerActions: { flexDirection: "row", gap: theme.space.sm },
+  title: {
+    ...theme.text.title,
+    color: theme.color.text,
+  },
+  headerActions: {
+    flexDirection: "row",
+    gap: theme.space.sm,
+  },
   iconButton: {
     minWidth: 44,
     minHeight: 44,
@@ -128,16 +187,39 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: theme.radius.pill,
   },
-  iconButtonDisabled: { opacity: 0.4 },
-  iconButtonLabel: { fontSize: 22, color: theme.color.primary },
-  banner: { backgroundColor: theme.color.border, padding: theme.space.sm },
-  bannerText: { ...theme.text.caption, color: theme.color.text, textAlign: "center" },
-  centered: { flex: 1, alignItems: "center", justifyContent: "center", gap: theme.space.md, padding: theme.space.lg },
-  emptyText: { ...theme.text.body, color: theme.color.textMuted, textAlign: "center" },
-  card: {
-    minHeight: 48,
+  iconButtonDisabled: {
+    opacity: 0.4,
+  },
+  iconButtonLabel: {
+    fontSize: 16,
+    color: theme.color.primary,
+    fontWeight: "600",
+  },
+  banner: {
+    backgroundColor: theme.color.border,
+    padding: theme.space.sm,
+  },
+  bannerText: {
+    ...theme.text.caption,
+    color: theme.color.text,
+    textAlign: "center",
+  },
+  centered: {
+    flex: 1,
+    alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: theme.space.md,
+    gap: theme.space.md,
+    padding: theme.space.lg,
+  },
+  emptyText: {
+    ...theme.text.body,
+    color: theme.color.textMuted,
+    textAlign: "center",
+  },
+  card: {
+    minHeight: 56,
+    justifyContent: "center",
+    padding: theme.space.md,
     marginHorizontal: theme.space.md,
     marginVertical: theme.space.xs,
     backgroundColor: theme.color.surface,
@@ -145,7 +227,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.color.border,
   },
-  cardText: { ...theme.text.body, color: theme.color.text },
+  cardText: {
+    ...theme.text.body,
+    color: theme.color.text,
+    fontWeight: "600",
+  },
+  cardHint: {
+    ...theme.text.caption,
+    color: theme.color.primary,
+    marginTop: theme.space.xs,
+  },
   skeletonRow: {
     height: 48,
     borderRadius: theme.radius.md,
