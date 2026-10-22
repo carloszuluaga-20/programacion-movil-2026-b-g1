@@ -1,22 +1,22 @@
 
 import {
-  View,
-  Text,
+  ActivityIndicator,
   Pressable,
   ScrollView,
   StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { theme } from "../../../core/theme/theme";
 import type { RootStackParamList } from "../../../core/navigation/types";
+import { useStudentDetail } from "./useStudentDetail";
 
-type Props = NativeStackScreenProps<
-  RootStackParamList,
-  "StudentDetail"
->;
+type Props = NativeStackScreenProps<RootStackParamList, "StudentDetail">;
 
 export function StudentDetailScreen({ route, navigation }: Props) {
   const { studentId } = route.params;
+  const { state, reload } = useStudentDetail(studentId);
 
   return (
     <ScrollView
@@ -27,51 +27,68 @@ export function StudentDetailScreen({ route, navigation }: Props) {
         <Pressable
           style={styles.backButton}
           accessibilityRole="button"
-          accessibilityLabel="Volver a la lista de estudiantes"
-          accessibilityHint="Regresa a la pantalla anterior"
+          accessibilityLabel="Volver a estudiantes"
           onPress={() => navigation.goBack()}
         >
           <Text style={styles.backText}>Volver</Text>
         </Pressable>
 
-        <Text
-          style={styles.title}
-          accessibilityRole="header"
-        >
+        <Text style={styles.title} accessibilityRole="header">
           Detalle de estudiante
         </Text>
 
-        <View style={styles.card}>
-          <Text style={styles.label}>
-            Identificador del estudiante
-          </Text>
+        {state.status === "loading" ? (
+          <View style={styles.card}>
+            <ActivityIndicator color={theme.color.primary} />
+            <Text style={styles.notice}>Cargando estudiante...</Text>
+          </View>
+        ) : state.status === "error" || state.status === "not-found" ? (
+          <View style={styles.card}>
+            <Text style={styles.notice}>
+              {state.status === "not-found"
+                ? "No se encontró el estudiante."
+                : "No se pudo cargar el estudiante."}
+            </Text>
+            <Pressable
+              style={styles.button}
+              accessibilityRole="button"
+              accessibilityLabel="Reintentar consulta del estudiante"
+              onPress={() => void reload()}
+            >
+              <Text style={styles.buttonText}>Reintentar</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <>
+            <View style={styles.card}>
+              <Text style={styles.label}>Nombre</Text>
+              <Text style={styles.value}>{state.student.name}</Text>
 
-          <Text
-            style={styles.value}
-            selectable
-          >
-            {studentId}
-          </Text>
+              <Text style={styles.label}>Número de documento</Text>
+              <Text style={styles.value}>
+                {state.student.documentNumber}
+              </Text>
 
-          <Text style={styles.notice}>
-            La información completa estará disponible cuando
-            se conecte la consulta del estudiante.
-          </Text>
-        </View>
+              <Text style={styles.label}>Identificador</Text>
+              <Text style={styles.value} selectable>
+                {state.student.id}
+              </Text>
+            </View>
 
-        <Pressable
-          style={styles.button}
-          accessibilityRole="button"
-          accessibilityLabel="Ver historial de asistencia"
-          accessibilityHint="Abre el historial del estudiante seleccionado"
-          onPress={() =>
-            navigation.navigate("AttendanceHistory", { studentId })
-          }
-        >
-          <Text style={styles.buttonText}>
-            Ver historial de asistencia
-          </Text>
-        </Pressable>
+            <Pressable
+              style={styles.button}
+              accessibilityRole="button"
+              accessibilityLabel="Ver historial de asistencia"
+              onPress={() =>
+                navigation.navigate("AttendanceHistory", { studentId })
+              }
+            >
+              <Text style={styles.buttonText}>
+                Ver historial de asistencia
+              </Text>
+            </Pressable>
+          </>
+        )}
       </View>
     </ScrollView>
   );
@@ -122,9 +139,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   notice: {
-    ...theme.text.caption,
+    ...theme.text.body,
     color: theme.color.textMuted,
-    marginTop: theme.space.sm,
   },
   button: {
     backgroundColor: theme.color.primary,
