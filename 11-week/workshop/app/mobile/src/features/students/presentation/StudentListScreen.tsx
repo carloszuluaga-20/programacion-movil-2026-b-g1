@@ -40,16 +40,18 @@ export function StudentListScreen() {
           <Pressable
             accessible
             accessibilityRole="button"
-            accessibilityLabel={strings.addStudentCta}
+            accessibilityLabel="Agregar estudiante"
+            accessibilityHint="Abre el formulario para registrar un estudiante"
             onPress={() => setModalVisible(true)}
             disabled={showOfflineBanner}
-            hitSlop={8}
             style={[
-              styles.iconButton,
+              styles.addButton,
               showOfflineBanner && styles.iconButtonDisabled,
             ]}
           >
-            <Text style={styles.iconButtonLabel}>+</Text>
+            <Text style={styles.addButtonLabel}>
+              + Agregar estudiante
+            </Text>
           </Pressable>
 
           <Pressable
@@ -83,6 +85,7 @@ export function StudentListScreen() {
           <Button
             label={strings.addStudentCta}
             onPress={() => setModalVisible(true)}
+            disabled={showOfflineBanner}
           />
         </View>
       )}
@@ -92,10 +95,7 @@ export function StudentListScreen() {
           <Text style={styles.emptyText}>
             {strings.errorMessage}
           </Text>
-          <Button
-            label={strings.retryButton}
-            onPress={reload}
-          />
+          <Button label={strings.retryButton} onPress={reload} />
         </View>
       )}
 
@@ -103,9 +103,7 @@ export function StudentListScreen() {
         <FlatList
           data={state.students}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <StudentCard student={item} />
-          )}
+          renderItem={({ item }) => <StudentCard student={item} />}
           refreshControl={
             <RefreshControl
               refreshing={false}
@@ -140,13 +138,8 @@ function StudentCard({ student }: { student: Student }) {
       }
       style={styles.card}
     >
-      <Text style={styles.cardText}>
-        {student.name}
-      </Text>
-
-      <Text style={styles.cardHint}>
-        Ver detalle
-      </Text>
+      <Text style={styles.cardText}>{student.name}</Text>
+      <Text style={styles.cardHint}>Ver detalle</Text>
     </Pressable>
   );
 }
@@ -171,6 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: theme.space.md,
+    gap: theme.space.sm,
+    flexWrap: "wrap",
   },
   title: {
     ...theme.text.title,
@@ -178,7 +173,22 @@ const styles = StyleSheet.create({
   },
   headerActions: {
     flexDirection: "row",
+    alignItems: "center",
     gap: theme.space.sm,
+    flexWrap: "wrap",
+  },
+  addButton: {
+    minHeight: 48,
+    paddingHorizontal: theme.space.md,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: theme.color.primary,
+    borderRadius: theme.radius.md,
+  },
+  addButtonLabel: {
+    color: theme.color.onPrimary,
+    fontSize: 14,
+    fontWeight: "700",
   },
   iconButton: {
     minWidth: 44,
