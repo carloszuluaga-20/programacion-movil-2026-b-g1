@@ -1,0 +1,9 @@
+.attendance-ux { --background: #f6f8fc; }
+.attendance-ux h1 { font-size: 1.65rem; font-weight: 750; color: #17263b; margin-bottom: .35rem; }
+.attendance-ux > p { color: #43546b; }
+.attendance-ux ion-button { min-height: 48px; font-weight: 650; }
+.attendance-ux ion-segment-button { min-height: 48px; min-width: 68px; }
+.attendance-ux ion-item { --min-height: 72px; --background: #fff; margin-bottom: 8px; border-radius: 10px; }
+.attendance-state { padding: 28px 18px; text-align: center; border: 1px solid #cdd8e5; border-radius: 12px; background: #fff; margin-top: 18px; }
+.attendance-state h2 { font-size: 1.2rem; color: #17263b; }
+@media (min-width: 760px) { .attendance-ux::part(scroll) { max-width: 760px; margin: auto; } }

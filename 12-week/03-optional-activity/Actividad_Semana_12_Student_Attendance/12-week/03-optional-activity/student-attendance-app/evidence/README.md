@@ -1,0 +1,1 @@
+Place real screenshots of the original and redesigned Attendance screen here. See WEEK11_UX_README.md.
